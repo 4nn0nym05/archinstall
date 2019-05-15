@@ -13,7 +13,48 @@ mkfs.ext4 /dev/sda1
 mount /dev/sda1 /mnt 
 pacstrap -i /mnt base base-devel
 genfstab -U -p /mnt >> /mnt/etc/fstab
-arch-chroot /mnt /bin/bash
+
+      
+      
+        
+
+  echo
+      
+      
+        
+  echo 'Copying script to chroot...'
+      
+      
+        
+  cp install.sh /mnt/root/install.sh
+      
+      
+        
+  chmod +x /mnt/root/install.sh
+      
+      
+        
+  echo
+      
+      
+        
+  echo "Done!"
+      
+      
+        
+  echo
+      
+      
+        
+  echo 'Entering chroot...'
+      
+      
+        
+  arch-chroot /mnt /root/install.sh setupchroot
+      
+      
+        
+
 passwd
 pacman -S ttf-dejavu lxdm
 echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
