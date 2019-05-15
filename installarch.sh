@@ -14,63 +14,22 @@ mount /dev/sda1 /mnt
 pacstrap -i /mnt base base-devel
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
-      
-      
-        
-
-  echo
-      
-      
-        
-  echo 'Copying script to chroot...'
-      
-      
-        
-  cp install.sh /mnt/installarch.sh
-      
-      
-        
-  chmod +x /mnt/installarch.sh
-      
-      
-        
-  echo
-      
-      
-        
-  echo "Done!"
-      
-      
-        
-  echo
-      
-      
-        
-  echo 'Entering chroot...'
-      
-      
-        
-  arch-chroot /mnt /installarch.sh setupchroot
-      
-      
-        
-
-passwd
-pacman -S ttf-dejavu lxdm
-echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
-echo "en_US.UTF-8" >> /etc/locale.gen
-locale-gen
-ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
-hwclock --systohc --localtime
-echo "KEYMAP=cz" > /etc/vconsole.conf
-echo arch > /etc/hostname
-cat > /etc/hosts <<EOF
+arch-chroot "passwd"
+arch-chroot "pacman -S ttf-dejavu lxdm"
+arch-chrootecho "'LANG="en_US.UTF-8"' >> /etc/locale.conf"
+arch-chrootecho ""en_US.UTF-8" >> /etc/locale.gen"
+arch-chroot "locale-gen"
+arch-chrootln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
+arch-chroothwclock --systohc --localtime
+arch-chrootecho "KEYMAP=cz" > /etc/vconsole.conf
+arch-chroot "echo arch > /etc/hostname"
+arch-chroot "cat > /etc/hosts <<EOF
 127.0.0.1 localhost.localdomain localhost arch
 ::1 localhost.localdomain localhost arch
-EOF
-pacman -S grub
-grub-install --recheck /dev/sda
-grub-mkconfig -o /boot/grub/grub.cfg
+EOF"
+arch-chroot "pacman -S grub"
+arch-chroot "grub-install --recheck /dev/sda"
+arch-chroot "grub-mkconfig -o /boot/grub/grub.cfg"
 exit
 umount -R /mnt
 reboot
