@@ -26,11 +26,11 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
       
       
         
-  cp install.sh /mnt/root/installarch.sh
+  cp install.sh /mnt/installarch.sh
       
       
         
-  chmod +x /mnt/root/installärch.sh
+  chmod +x /mnt/installarch.sh
       
       
         
@@ -50,7 +50,7 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
       
       
         
-  arch-chroot /mnt /root/installarch.sh setupchroot
+  arch-chroot /mnt /installarch.sh setupchroot
       
       
         
