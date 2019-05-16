@@ -3,7 +3,14 @@
 
 set -xe
 timedatectl set-ntp true
-
+parted <<EOF
+mklabel msdos
+mkpart primary ext2 1 100M
+mkpart primary ext4 2 100M 100%
+set 1 boot on
+set 2 LVM on
+EOF
+diskpart() {
 fdisk /dev/sda <<EOF
 o
 n
@@ -23,6 +30,7 @@ t
 8e
 w
 EOF
+}
 setup_LVM() {
   cryptsetup luksFormat /dev/sda1
   cryptsetup open --type luks /dev/sda1 lvm
