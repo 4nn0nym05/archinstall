@@ -1,8 +1,9 @@
 #!/bin/bash
 
-
 set -xe
+
 timedatectl set-ntp true
+
 parted <<EOF
 mklabel msdos
 mkpart primary ext2 1 400M
@@ -11,23 +12,18 @@ set 1 boot on
 set 2 LVM on
 quit
 EOF
-
-setup_LVM() {
-  cryptsetup luksFormat /dev/sda2
+cryptsetup luksFormat /dev/sda2
 cryptsetup open --type luks /dev/sda2 lvm
 #pvcreate --dataalignment 1m /dev/mapper/lvm #ssd
 pvcreate /dev/mapper/lvm #only hdd
 vgcreate volgroup0 /dev/mapper/lvm
-
 lvcreate -L 10GB volgroup0 -n lv_root
 lvcreate -L 3GB volgroup0 -n lv_swap
 lvcreate -l 100%FREE volgroup0 -n lv_home
-  modprobe dm_mod
- vgscan
- vgchange -ay
+modprobe dm_mod
+vgscan
+vgchange -ay
 
-}
-setup_LVM
 mkfs.ext2 /dev/sda2
 mkfs.ext4 /dev/volgroup0/lv_root
 mkfs.ext4 /dev/volgroup0/lv_home
