@@ -7,7 +7,7 @@ mkpart primary ext2 1 400M
       
       
         
-mkpart primary ext4 2 400M 100%
+mkpart primary ext4 400M 100%
       
       
         
