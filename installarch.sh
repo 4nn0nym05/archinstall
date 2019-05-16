@@ -6,36 +6,17 @@ timedatectl set-ntp true
 parted <<EOF
 mklabel msdos
 mkpart primary ext2 1 400M
-mkpart primary ext4 2 400M 100%
+mkpart primary ext4 400M 100%
 set 1 boot on
 set 2 LVM on
+quit
 EOF
-diskpart() {
-fdisk /dev/sda <<EOF
-o
-n
-p
-1
 
-+7G
-n
-p
-2
-
-+512M
-a
-2
-t
-1
-8e
-w
-EOF
-}
 setup_LVM() {
   cryptsetup luksFormat /dev/sda2
 cryptsetup open --type luks /dev/sda2 lvm
-pvcreate --dataalignment 1m /dev/mapper/lvm -only ssd
-pvcreate /dev/mapper/lvm -only hdd
+#pvcreate --dataalignment 1m /dev/mapper/lvm #ssd
+pvcreate /dev/mapper/lvm #only hdd
 vgcreate volgroup0 /dev/mapper/lvm
 
 lvcreate -L 10GB volgroup0 -n lv_root
