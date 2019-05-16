@@ -16,7 +16,7 @@ set 1 boot on
       
         
 set 2 LVM on
-      
+quit      
       
         
 EOF
