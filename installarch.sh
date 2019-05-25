@@ -39,6 +39,7 @@ genfstab -U -p /mnt >> /mnt/etc/fstab
 arch-chroot /mnt passwd
 arch-chroot /mnt useradd -m -g wheel joker 
 arch-chroot /mnt passwd joker
+arch-chroot /mnt sed -i 's+# %wheel ALL=(ALL) ALL+ %wheel ALL=(ALL) ALL +g' /etc/sudoers
 arch-chroot /mnt pacman -S --noconfirm grub linux-headers ttf-dejavu i3 dmenu sddm networkmanager xorg-server wpa_supplicant wireless_tools ranger xterm
 arch-chroot /mnt systemctl enable sddm
 arch-chroot /mnt systemctl enable NetworkManager
