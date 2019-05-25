@@ -57,7 +57,8 @@ EOF
 arch-chroot /mnt sed -i 's/HOOKS=(base udev autodetect modconf block filesystems keyboard fsck)/HOOKS=(base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck)/g' /etc/mkinitcpio.conf
 arch-chroot /mnt nano /etc/mkinitcpio.conf
 arch-chroot /mnt mkinitcpio -p linux
-arch-chroot /mnt sed -i 's/GRUB_CMDLINE_LINUX_DEFAULT="quiet"/GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/sda2:volgroup0 quiet"/g' /etc/default/grub
+arch-chroot /mnt sed -i 's+GRUB_CMDLINE_LINUX_DEFAULT="quiet"+GRUB_CMDLINE_LINUX_DEFAULT="cryptdevice=/dev/sda2:volgroup0 quiet"+g' /etc/default/grub
 arch-chroot /mnt nano /etc/default/grub
 arch-chroot /mnt grub-install --recheck /dev/sda
 arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+umount -R /mnt
