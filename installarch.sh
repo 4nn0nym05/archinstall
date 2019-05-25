@@ -14,8 +14,8 @@ quit
 EOF
 cryptsetup luksFormat /dev/sda2
 cryptsetup open --type luks /dev/sda2 lvm
-#pvcreate --dataalignment 1m /dev/mapper/lvm #ssd
-pvcreate /dev/mapper/lvm #only hdd
+pvcreate --dataalignment 1m /dev/mapper/lvm
+#pvcreate /dev/mapper/lvm #only hdd
 vgcreate volgroup0 /dev/mapper/lvm
 lvcreate -L 10GB volgroup0 -n lv_root
 lvcreate -L 3GB volgroup0 -n lv_swap
@@ -36,25 +36,27 @@ mount /dev/volgroup0/lv_home /mnt/home
 pacstrap -i /mnt base
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
+arch-chroot /mnt /bin/bash <<EOF
+passwd
+useradd -m -g wheel joker
+passwd joker
+pacman -S --noconfirm grub linux-headers ttf-dejavu i3 dmenu sddm networkmanager xorg-server 
+systemctl enable sddm 
+systemctl enable NetworkManager
+echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
+echo "en_US.UTF-8" >> /etc/locale.gen
+locale-gen
+ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
+echo "KEYMAP=cz" > /etc/vconsole.conf
+echo arch > /etc/hostname
+cat > /etc/hosts <<EOF
 
-arch-chroot /mnt passwd
-arch-chroot /mnt useradd -m -g wheel joker 
-arch-chroot /mnt passwd joker
-arch-chroot /mnt pacman -S --noconfirm grub linux-headers ttf-dejavu i3 dmenu sddm networkmanager xorg-server 
-arch-chroot /mnt systemctl enable sddm 
-arch-chroot /mnt systemctl enable NetworkManager
-arch-chroot /mnt echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
-arch-chroot /mnt echo "en_US.UTF-8" >> /etc/locale.gen
-arch-chroot /mnt locale-gen
-arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
-arch-chroot /mnt hwclock --systohc --localtime
-arch-chroot /mnt echo "KEYMAP=cz" > /etc/vconsole.conf
-arch-chroot /mnt echo arch > /etc/hostname
-arch-chroot /mnt cat > /etc/hosts <<EOF
 127.0.0.1 localhost.localdomain localhost arch
+
 ::1 localhost.localdomain localhost arch
+
 EOF
-   cat > /etc/mkinitcpio.conf <<EOF
+cat > /etc/mkinitcpio.conf <<EOF
 # vim:set ft=sh
 # MODULES
 # The following modules are loaded before any boot hooks are
@@ -122,4 +124,6 @@ HOOKS="base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck
 # COMPRESSION_OPTIONS
 # Additional options for the compressor
 #COMPRESSION_OPTIONS=""
+EOF
+mkinitcpio -p linux
 EOF
