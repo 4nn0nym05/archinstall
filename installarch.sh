@@ -24,7 +24,7 @@ modprobe dm_mod
 vgscan
 vgchange -ay
 
-mkfs.ext2 /dev/sda2
+mkfs.ext2 /dev/sda1
 mkfs.ext4 /dev/volgroup0/lv_root
 mkfs.ext4 /dev/volgroup0/lv_home
 
