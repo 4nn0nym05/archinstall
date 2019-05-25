@@ -33,10 +33,10 @@ mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 mkdir /mnt/home 
 mount /dev/volgroup0/lv_home /mnt/home 
-#pacstrap -i /mnt base
-#genfstab -U -p /mnt >> /mnt/etc/fstab
+pacstrap -i /mnt base
+genfstab -U -p /mnt >> /mnt/etc/fstab
 
-chroot() {
+
 arch-chroot /mnt passwd
 arch-chroot /mnt useradd -m -g wheel joker 
 arch-chroot /mnt passwd joker
@@ -54,4 +54,4 @@ arch-chroot /mnt cat > /etc/hosts <<EOF
 127.0.0.1 localhost.localdomain localhost arch
 ::1 localhost.localdomain localhost arch
 EOF
-}
+
