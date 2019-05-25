@@ -33,13 +33,13 @@ mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
 mkdir /mnt/home 
 mount /dev/volgroup0/lv_home /mnt/home 
-pacstrap -i /mnt base
+pacstrap -i /mnt base base-devel
 genfstab -U -p /mnt >> /mnt/etc/fstab
 
 arch-chroot /mnt passwd
 arch-chroot /mnt useradd -m -g wheel joker 
 arch-chroot /mnt passwd joker
-arch-chroot /mnt pacman -S --noconfirm grub linux-headers ttf-dejavu i3 dmenu sddm networkmanager xorg-server 
+arch-chroot /mnt pacman -S --noconfirm grub linux-headers ttf-dejavu i3 dmenu sddm networkmanager xorg-server wpa_supplicant wireless_tools ranger xterm
 arch-chroot /mnt systemctl enable sddm
 arch-chroot /mnt systemctl enable NetworkManager
 arch-chroot /mnt echo 'LANG="en_US.UTF-8"' >> /etc/locale.conf
