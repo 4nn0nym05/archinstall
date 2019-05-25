@@ -49,14 +49,15 @@ locale-gen
 ln -sf /usr/share/zoneinfo/Europe/Prague /etc/localtime
 echo "KEYMAP=cz" > /etc/vconsole.conf
 echo arch > /etc/hostname
-cat > /etc/hosts <<EOF
+EOF
+arch-chroot /mnt cat > /etc/hosts <<EOF
 
 127.0.0.1 localhost.localdomain localhost arch
 
 ::1 localhost.localdomain localhost arch
 
 EOF
-cat > /etc/mkinitcpio.conf <<EOF
+arch-chroot /mnt cat > /etc/mkinitcpio.conf <<EOF
 # vim:set ft=sh
 # MODULES
 # The following modules are loaded before any boot hooks are
@@ -125,5 +126,5 @@ HOOKS="base udev autodetect modconf block encrypt lvm2 filesystems keyboard fsck
 # Additional options for the compressor
 #COMPRESSION_OPTIONS=""
 EOF
-mkinitcpio -p linux
-EOF
+arch-chroot /mnt mkinitcpio -p linux
+
